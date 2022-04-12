@@ -1,8 +1,13 @@
 <template>
-  <div class="chat">
+  <div :key="refresh" class="chat">
     <h1>Chat Room</h1>
+
+    <h2>URL Vidéo :</h2>
+    <input type="text" v-model="urlVideo" />
+    <button @click="setIdVideo">Change</button>
+
     <vue-plyr ref="plyr">
-      <div data-plyr-provider="youtube" data-plyr-embed-id="bTqVqk7FSmY"></div>
+      <div data-plyr-provider="youtube" :data-plyr-embed-id="idVideo"></div> 
     </vue-plyr>
 
     <ul>
@@ -34,7 +39,9 @@ export default {
       socket: io("http://localhost:8847"),
       temp: false,
       oldTime: 0,
-      hasStarted: false,
+      urlVideo:"",
+      idVideo:"bTqVqk7FSmY",
+      refresh : true,
     };
   },
 
@@ -67,6 +74,13 @@ export default {
       this.temp = true;
     });
 
+     this.socket.on("CHANGE-ALL", (data) => {
+      this.refresh = !this.refresh;
+      this.idVideo = this.youtube_parser(data.url);
+      console.log(this.$refs);
+    });
+
+
     this.$refs.plyr.player.on("playing", () => {
       this.startVideo();
     });
@@ -74,6 +88,8 @@ export default {
     this.$refs.plyr.player.on("pause", () => {
       this.pauseVideo();
     });
+
+   
   },
 
   methods: {
@@ -109,6 +125,22 @@ export default {
         this.messages.push(data);
       });
     },
+
+    setIdVideo(){
+      this.socket.emit("CHANGE_VIDEO", {
+        action: "change!",
+        url: this.urlVideo,
+      });
+      this.urlVideo = "";
+    },
+
+    youtube_parser(url){
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var match = url.match(regExp);
+    return (match&&match[7].length==11)? match[7] : false;
+    },
+
+    
   },
 };
 </script>
