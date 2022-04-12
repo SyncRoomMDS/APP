@@ -38,6 +38,10 @@ io.on("connect", (socket) => {
         io.emit("PAUSE-ALL",(data))
     });
 
+    socket.on('UPDATE_VIDEO', function (data) {
+        socket.broadcast.emit("UPDATE-ALL",(data))
+    });
+
 })
 
 //-----------------------Tous les clients

@@ -1,7 +1,7 @@
 <template>
   <div class="chat">
     <h1>Chat Room</h1>
-    <vue-plyr id="pipi" ref="plyr">
+    <vue-plyr ref="plyr">
       <div data-plyr-provider="youtube" data-plyr-embed-id="bTqVqk7FSmY"></div>
     </vue-plyr>
 
@@ -32,20 +32,39 @@ export default {
       currentMessage: "",
       messages: [],
       socket: io("http://localhost:8847"),
+      temp: false,
+      oldTime: 0,
+      hasStarted: false,
     };
   },
 
   mounted() {
     this.receiveMessage();
 
-    this.socket.on("PLAY-ALL", (data) => {
-      console.log(data)
+    this.$refs.plyr.player.on("ready", () => {
+      this.changeTimerVideo(this.$refs.plyr.player.currentTime);
+    });
+
+    this.$refs.plyr.player.on("seeked", () => {
+      if (this.temp == false) {
+        this.changeTimerVideo(this.$refs.plyr.player.currentTime);
+      } else {
+        this.temp = false;
+      }
+    });
+
+    this.socket.on("PLAY-ALL", () => {
       this.$refs.plyr.player.play();
     });
 
     this.socket.on("PAUSE-ALL", (data) => {
       console.log("data", data);
       this.$refs.plyr.player.pause();
+    });
+
+    this.socket.on("UPDATE-ALL", (data) => {
+      this.$refs.plyr.player.currentTime = data.time;
+      this.temp = true;
     });
 
     this.$refs.plyr.player.on("playing", () => {
@@ -64,6 +83,7 @@ export default {
         user: "User1",
         message: this.currentMessage,
       });
+      this.currentMessage = "";
     },
     startVideo() {
       this.socket.emit("START_VIDEO", {
@@ -76,8 +96,15 @@ export default {
       });
     },
 
+    changeTimerVideo(timer) {
+      this.socket.emit("UPDATE_VIDEO", {
+        action: "Update!",
+        time: timer,
+      });
+    },
+
     /* RECEIVE */
-     receiveMessage() {
+    receiveMessage() {
       this.socket.on("MESSAGE-ALL", (data) => {
         this.messages.push(data);
       });
