@@ -30,6 +30,14 @@ io.on("connect", (socket) => {
         /* socket.emit('MESSAGE', {date:"22/03/2022"}) */
     });
 
+    socket.on('START_VIDEO', function (data) {
+        io.emit("PLAY-ALL",(data))
+    });
+
+    socket.on('PAUSE_VIDEO', function (data) {
+        io.emit("PAUSE-ALL",(data))
+    });
+
 })
 
 //-----------------------Tous les clients
