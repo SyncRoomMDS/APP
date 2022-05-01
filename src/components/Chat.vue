@@ -1,5 +1,5 @@
 <template>
-  <div :key="refresh" class="chat">
+  <div class="chat">
     <ul>
       <li v-for="message in messages" :key="message">
         {{ message }}
