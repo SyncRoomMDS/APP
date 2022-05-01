@@ -19,17 +19,22 @@ export default {
     return {
       temp: false,
       urlVideo: "",
-      idVideo: "bTqVqk7FSmY",
       refresh: true,
+      idVideo: "bTqVqk7FSmY",
     };
   },
 
   computed: {
-    ...mapGetters(["socket"]),
+    ...mapGetters(["socket", "idVideo"]),
+  },
+
+  created() {
+    if (this.$cookies.get("idVideo")) {
+      this.idVideo = this.$cookies.get("idVideo");
+    }
   },
 
   mounted() {
-
     this.$refs.plyr.player.on("ready", () => {
       this.changeTimerVideo(this.$refs.plyr.player.currentTime);
     });
@@ -59,7 +64,8 @@ export default {
     this.socket.on("CHANGE-ALL", (data) => {
       this.refresh = !this.refresh;
       this.idVideo = this.youtube_parser(data.url);
-      console.log("ref",this.$refs);
+      this.$cookies.set("idVideo", this.idVideo);
+      location.reload();
     });
 
     this.$refs.plyr.player.on("playing", () => {
