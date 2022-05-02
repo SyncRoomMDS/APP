@@ -46,6 +46,7 @@
 html, body {
   font-size: 14px;
   font-weight: 300;
+  height:100%;
 }
 .hero.is-success {
   background: #F2F6FA;

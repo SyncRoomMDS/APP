@@ -75,10 +75,8 @@ export default {
     connect() {
       // Fired when the socket connects.
       this.isConnected = true;
-      console.log('Connected')
+      console.log("Connected");
     },
-
-
   },
 
   methods: {
