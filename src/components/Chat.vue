@@ -6,12 +6,13 @@
       </li>
     </ul>
     <textarea
+      class="textarea"
       name=""
       v-model="currentMessage"
       cols="30"
       rows="2"
     ></textarea>
-    <button v-on:click="sendMessage">send</button>
+    <button class="button is-primary" v-on:click="sendMessage">send</button>
   </div>
 </template>
 

@@ -56,3 +56,6 @@ function sendToAll(message){
 
 //----Port d'ecoute
 server.listen(8847)
+
+//----Utilisation statique
+app.use(express.static('public'));

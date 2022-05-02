@@ -7,14 +7,19 @@
 
 <script>
 // @ is an alias to /src
-import Chat from '@/components/Chat.vue'
-import Video from '@/components/Video.vue'
+import Chat from '@/components/Chat.vue';
+import Video from '@/components/Video.vue';
 
 export default {
   name: 'Home',
   components: {
     Chat,
     Video
+  },
+  mounted() {
+    if (this.$cookies.get("user-cookie")) {
+      // ...
+    }
   }
 }
 </script>
