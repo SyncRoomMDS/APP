@@ -25,7 +25,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["socket", "idVideo"]),
+    ...mapGetters(["socket"]),
   },
 
   created() {
