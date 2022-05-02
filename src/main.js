@@ -15,7 +15,7 @@ createApp(App).use(VuePlyr, {
   }
 }).use(store).use(router).use(VueCookies).use(new VueSocketIO({
   debug: true,
-  //connection: 'localhost:3000/'
-  connection: 'https://syncroom-socket1.herokuapp.com/'
+  connection: 'localhost:3000/'
+  /* connection: 'https://syncroom-socket1.herokuapp.com/' */
 }))
   .mount('#app')
