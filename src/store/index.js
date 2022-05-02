@@ -1,4 +1,4 @@
-import { createStore } from 'vuex'
+/* import { createStore } from 'vuex'
 import { io } from "socket.io-client";
 
 export default createStore({
@@ -17,3 +17,4 @@ export default createStore({
   modules: {
   }
 })
+ */

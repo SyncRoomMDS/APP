@@ -11,8 +11,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
 export default {
   name: "Chat",
   data() {
@@ -22,10 +20,6 @@ export default {
       refresh: true,
       idVideo: "bTqVqk7FSmY",
     };
-  },
-
-  computed: {
-    ...mapGetters(["socket"]),
   },
 
   created() {
@@ -47,21 +41,21 @@ export default {
       }
     });
 
-    this.socket.on("PLAY-ALL", () => {
+    this.sockets.subscribe("PLAY-ALL", () => {
       this.$refs.plyr.player.play();
     });
 
-    this.socket.on("PAUSE-ALL", (data) => {
+    this.sockets.subscribe("PAUSE-ALL", (data) => {
       console.log("data", data);
       this.$refs.plyr.player.pause();
     });
 
-    this.socket.on("UPDATE-ALL", (data) => {
+    this.sockets.subscribe("UPDATE-ALL", (data) => {
       this.$refs.plyr.player.currentTime = data.time;
       this.temp = true;
     });
 
-    this.socket.on("CHANGE-ALL", (data) => {
+    this.sockets.subscribe("CHANGE-ALL", (data) => {
       this.refresh = !this.refresh;
       this.idVideo = this.youtube_parser(data.url);
       this.$cookies.set("idVideo", this.idVideo);
@@ -77,27 +71,37 @@ export default {
     });
   },
 
+  sockets: {
+    connect() {
+      // Fired when the socket connects.
+      this.isConnected = true;
+      console.log('Connected')
+    },
+
+
+  },
+
   methods: {
     startVideo() {
-      this.socket.emit("START_VIDEO", {
+      this.$socket.emit("START_VIDEO", {
         action: "Play!",
       });
     },
     pauseVideo() {
-      this.socket.emit("PAUSE_VIDEO", {
+      this.$socket.emit("PAUSE_VIDEO", {
         action: "Pause!",
       });
     },
 
     changeTimerVideo(timer) {
-      this.socket.emit("UPDATE_VIDEO", {
+      this.$socket.emit("UPDATE_VIDEO", {
         action: "Update!",
         time: timer,
       });
     },
 
     setIdVideo() {
-      this.socket.emit("CHANGE_VIDEO", {
+      this.$socket.emit("CHANGE_VIDEO", {
         action: "change!",
         url: this.urlVideo,
       });

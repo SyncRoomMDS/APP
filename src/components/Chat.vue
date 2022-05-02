@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   name: "Chat",
   data() {
@@ -28,12 +26,6 @@ export default {
     };
   },
 
-  computed: {
-    ...mapGetters([
-      'socket',
-    ])
-  },
-
   mounted() {
     this.receiveMessage();
   },
@@ -41,7 +33,7 @@ export default {
   methods: {
     /* EMIT */
     sendMessage() {
-      this.socket.emit("SEND_MESSAGE", {
+      this.$socket.emit("SEND_MESSAGE", {
         user: "User1",
         message: this.currentMessage,
       });
@@ -50,7 +42,7 @@ export default {
 
     /* RECEIVE */
     receiveMessage() {
-      this.socket.on("MESSAGE-ALL", (data) => {
+      this.sockets.subscribe("MESSAGE-ALL", (data) => {
         this.messages.push(data);
       });
     },
