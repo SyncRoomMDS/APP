@@ -1,14 +1,24 @@
 <template>
-  <div :key="refresh">
-    <h2>URL Vidéo :</h2>
-    <input type="text" v-model="urlVideo" />
-    <button @click="setIdVideo">Change</button>
-
+  <div class="media-player" :key="refresh">
     <vue-plyr ref="plyr">
       <div data-plyr-provider="youtube" :data-plyr-embed-id="idVideo"></div>
     </vue-plyr>
+    <div id="send-ctl" class="columns is-centered">
+      <div class="column is-10">
+        <input class="input is-link" type="text" placeholder="Saisir une URL" v-model="urlVideo" />
+      </div>
+      <div class="column">
+        <button class="button is-link" @click="setIdVideo">Choisir</button>
+      </div>
+    </div>
   </div>
 </template>
+
+<style>
+#send-ctl {
+  padding-top: 1vh;
+}
+</style>
 
 <script>
 export default {

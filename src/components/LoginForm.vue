@@ -46,7 +46,6 @@
 html, body {
   font-size: 14px;
   font-weight: 300;
-  height:100%;
 }
 .hero.is-success {
   background: #F2F6FA;
@@ -83,6 +82,8 @@ p.subtitle {
 </style>
 
 <script>
+import router from '../router';
+
 export default {
   name: "LoginForm",
   data() {
@@ -90,14 +91,6 @@ export default {
       username: "",
       password: ""
     };
-  },
-
-  computed: {
-    // ...
-  },
-
-  mounted() {
-    // ...
   },
 
   methods: {
@@ -108,11 +101,19 @@ export default {
         password: self.password
       })
       .then((response) => {
-        self.username = self.password = "";
-        console.log(response);
+        self.clearForm();
+        self.saveCookie( response.data );
+        router.push( "/" );
       }, (error) => {
-        console.log(error);
+        self.clearForm();
+        throw error;
       });
+    },
+    clearForm: function() {
+      this.username = this.password = "";
+    },
+    saveCookie: function( data ) {
+      this.$cookies.set("user-cookie", data.token );
     }
   },
 };

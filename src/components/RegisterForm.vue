@@ -32,7 +32,7 @@
                                   </span>
                               </div>
                           </div>
-                          <div id="passworde" class="field">
+                          <div class="field">
                               <div class="control has-icons-left has-icons-right">
                                   <input class="input is-large" type="password" placeholder="Mot de passe" v-model="password" required />
                                   <span class="icon is-small is-left">
@@ -95,35 +95,11 @@ p.subtitle {
 .fa {
   margin-left: 5px; 
 }
-
-/* input[type=password], #passworde { */
-  /* 2 animations: shake, and glow red */
-  /*animation-name: shake, glow-red;
-  animation-duration: 0.7s, 0.35s;
-  animation-iteration-count: 1, 2;
-}
-
-@keyframes shake {
-  0%, 20%, 40%, 60%, 80% {
-    transform: translateX(8px);
-  }
-  10%,
-  30%,
-  50%,
-  70%,
-  90% {
-    transform: translateX(-8px);
-  }
-}
-
-@keyframes glow-red {
-  50% {
-    border-color: indianred;
-  }
-}*/
 </style>
 
 <script>
+import router from '../router';
+
 export default {
   name: "LoginForm",
   data() {
@@ -135,14 +111,6 @@ export default {
     };
   },
 
-  computed: {
-    // ...
-  },
-
-  mounted() {
-    // ...
-  },
-
   methods: {
     checkForm: function() {
       let self = this;
@@ -152,12 +120,43 @@ export default {
         username: self.username,
         password: self.password
       })
-      .then((response) => {
-        self.username = self.password = "";
-        console.log(response);
+      .then(() => {
+        self.clearForm();
+        router.push( "/login" );
       }, (error) => {
-        console.log(error);
+        self.clearForm();
+        throw error;
       });
+    },
+    clearForm: function() {
+      this.firstname = this.lastname = this.username = this.password = "";
+    },
+    checkHello: function() {
+      //router.push( "Login" );
+      //let self = this;
+      if ( this.temp === 2 ) {
+        /*this.$http.post("http://localhost:4000/users/authenticate", {
+          username: "arelle",
+          password: "patate"
+        })
+        .then((response) => {
+          self.temp += 1;
+          console.log(response);
+        }, (error) => {
+          console.log(error);
+        });*/
+      } else {
+        /* this.$http.get("http://localhost:4000/users/user", {
+          headers: {
+            'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExLCJpYXQiOjE2NTE1Mzc5NzQsImV4cCI6MTY1MjE0Mjc3NH0.8Pylp6asQPbFdDqRFWSeUybMq8fuaSrifyhxMm862gE'
+          }
+        })
+        .then((response) => {
+          console.log(response);
+        }, (error) => {
+          console.log(error);
+        });*/
+      }
     }
   },
 };

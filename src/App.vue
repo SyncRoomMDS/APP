@@ -10,13 +10,16 @@
 
 <style>
 
+html, body {
+  background-color: #2D4199;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #dae1f7;
-  background-color: #2D4199;
   height: 100%;
 }
 
